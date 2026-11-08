@@ -1,0 +1,14 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Servolab</title>
+<script>
+  // GitHub Pages fallback: the app uses hash routing (#/learn), so any unknown path
+  // is redirected back to the app root, keeping the requested route.
+  (function () {
+    var l = window.location;
+    var parts = l.pathname.split('/').filter(Boolean);
+    var isProjectSite = /\.github\.io$/i.test(l.hostname) && parts.length > 0;
+    var base = isProjectSite ? '/' + parts[0] + '/' : '/';
+    var rest = isProjectSite ? parts.slice(1).join('/') : parts.join('/');
+    l.replace(l.origin + base + (rest ? '#/' + rest : ''));
+  })();
+</script></head><body></body></html>

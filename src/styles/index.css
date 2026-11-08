@@ -1,0 +1,337 @@
+@import "tailwindcss";
+
+/* ------------------------------------------------------------------ */
+/*  Servolab design tokens                                             */
+/*  Warm lab-paper neutrals, graphite ink, industrial-orange brand,    */
+/*  blueprint blue for diagrams, gold for rewards.                     */
+/* ------------------------------------------------------------------ */
+:root {
+  --paper: 243 240 232;
+  --panel: 251 249 244;
+  --sunken: 233 229 219;
+  --line: 214 208 196;
+  --line-strong: 176 170 158;
+  --ink: 28 31 34;
+  --ink-2: 78 80 83;
+  --ink-3: 120 118 112;
+  --brand: 235 90 30;
+  --brand-deep: 176 60 12;
+  --brand-soft: 251 225 210;
+  --blue: 44 93 158;
+  --blue-soft: 222 231 244;
+  --ok: 26 128 84;
+  --ok-soft: 216 240 226;
+  --bad: 196 42 66;
+  --bad-soft: 249 222 226;
+  --gold: 214 146 10;
+  --gold-soft: 250 236 200;
+  --grid: 28 31 34;
+  color-scheme: light;
+}
+
+:root[data-theme="dark"] {
+  --paper: 22 24 27;
+  --panel: 31 34 38;
+  --sunken: 16 18 20;
+  --line: 54 58 63;
+  --line-strong: 92 97 104;
+  --ink: 238 234 226;
+  --ink-2: 184 180 172;
+  --ink-3: 140 138 132;
+  --brand: 246 110 52;
+  --brand-deep: 255 150 104;
+  --brand-soft: 70 38 24;
+  --blue: 120 164 226;
+  --blue-soft: 30 44 64;
+  --ok: 70 196 136;
+  --ok-soft: 22 52 38;
+  --bad: 244 108 124;
+  --bad-soft: 66 26 32;
+  --gold: 242 190 64;
+  --gold-soft: 60 46 18;
+  --grid: 238 234 226;
+  color-scheme: dark;
+}
+
+:root[data-contrast="high"] {
+  --ink-2: var(--ink);
+  --ink-3: var(--ink);
+  --line: var(--line-strong);
+  --brand-deep: 140 44 6;
+}
+:root[data-theme="dark"][data-contrast="high"] {
+  --brand-deep: 255 176 140;
+}
+
+@theme inline {
+  --color-paper: rgb(var(--paper));
+  --color-panel: rgb(var(--panel));
+  --color-sunken: rgb(var(--sunken));
+  --color-line: rgb(var(--line));
+  --color-line-strong: rgb(var(--line-strong));
+  --color-ink: rgb(var(--ink));
+  --color-ink-2: rgb(var(--ink-2));
+  --color-ink-3: rgb(var(--ink-3));
+  --color-brand: rgb(var(--brand));
+  --color-brand-deep: rgb(var(--brand-deep));
+  --color-brand-soft: rgb(var(--brand-soft));
+  --color-blue: rgb(var(--blue));
+  --color-blue-soft: rgb(var(--blue-soft));
+  --color-ok: rgb(var(--ok));
+  --color-ok-soft: rgb(var(--ok-soft));
+  --color-bad: rgb(var(--bad));
+  --color-bad-soft: rgb(var(--bad-soft));
+  --color-gold: rgb(var(--gold));
+  --color-gold-soft: rgb(var(--gold-soft));
+  --font-sans: "Space Grotesk", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Base                                                               */
+/* ------------------------------------------------------------------ */
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  background: rgb(var(--paper));
+}
+html,
+body {
+  overscroll-behavior-y: none;
+}
+body {
+  margin: 0;
+  background: rgb(var(--paper));
+  color: rgb(var(--ink));
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+  overflow-x: hidden;
+}
+#root {
+  min-height: 100dvh;
+}
+button,
+[role="button"] {
+  touch-action: manipulation;
+  -webkit-user-select: none;
+  user-select: none;
+}
+input,
+textarea,
+select {
+  font-size: 16px; /* prevents iOS zoom on focus */
+}
+
+:focus-visible {
+  outline: 3px solid rgb(var(--blue));
+  outline-offset: 2px;
+  border-radius: 8px;
+}
+
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Safe areas.
+   Horizontal insets (landscape notch) are applied once on <body>; fixed bars centre their
+   content in a max-width column so it never sits under the notch.
+   These helpers are intentionally un-layered and must not be combined with pt-*/pb-* on the same element. */
+body {
+  padding-left: env(safe-area-inset-left, 0px);
+  padding-right: env(safe-area-inset-right, 0px);
+}
+.pt-safe {
+  padding-top: env(safe-area-inset-top, 0px);
+}
+.pt-safe-3 {
+  padding-top: calc(env(safe-area-inset-top, 0px) + 0.75rem);
+}
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+.nav-space {
+  padding-bottom: calc(84px + env(safe-area-inset-bottom, 0px));
+}
+
+/* Engineering-notebook backgrounds */
+.bg-dotgrid {
+  background-image: radial-gradient(rgb(var(--grid) / 0.11) 1px, transparent 1.2px);
+  background-size: 18px 18px;
+}
+.bg-blueprint {
+  background-image:
+    linear-gradient(rgb(var(--blue) / 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(var(--blue) / 0.07) 1px, transparent 1px);
+  background-size: 16px 16px;
+}
+
+/* Tactile "keycap" button press */
+.press {
+  transition: transform 120ms cubic-bezier(.2,.8,.2,1), box-shadow 120ms, background-color 150ms, border-color 150ms;
+}
+.press:active:not(:disabled) {
+  transform: translateY(2px);
+}
+
+/* ------------------------------------------------------------------ */
+/*  Motion                                                             */
+/* ------------------------------------------------------------------ */
+@keyframes sl-pop {
+  0% { transform: scale(.6); opacity: 0; }
+  60% { transform: scale(1.08); opacity: 1; }
+  100% { transform: scale(1); }
+}
+@keyframes sl-rise {
+  from { transform: translateY(14px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+@keyframes sl-sheet {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+@keyframes sl-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes sl-shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-7px); }
+  40% { transform: translateX(6px); }
+  60% { transform: translateX(-4px); }
+  80% { transform: translateX(2px); }
+}
+@keyframes sl-pulse {
+  0% { box-shadow: 0 0 0 0 rgb(var(--brand) / .45); }
+  70% { box-shadow: 0 0 0 14px rgb(var(--brand) / 0); }
+  100% { box-shadow: 0 0 0 0 rgb(var(--brand) / 0); }
+}
+@keyframes sl-bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+@keyframes sl-spin {
+  to { transform: rotate(360deg); }
+}
+@keyframes sl-glow {
+  0%, 100% { opacity: .85; }
+  50% { opacity: 1; }
+}
+@keyframes sl-float-up {
+  0% { transform: translateY(0); opacity: 0; }
+  20% { opacity: 1; }
+  100% { transform: translateY(-36px); opacity: 0; }
+}
+@keyframes sl-unlock {
+  0% { transform: scale(1) rotate(0); }
+  30% { transform: scale(1.15) rotate(-8deg); }
+  60% { transform: scale(.95) rotate(5deg); }
+  100% { transform: scale(1) rotate(0); }
+}
+@keyframes sl-dash {
+  to { stroke-dashoffset: 0; }
+}
+@keyframes sl-ping {
+  0% { transform: scale(.4); opacity: .9; }
+  100% { transform: scale(1.6); opacity: 0; }
+}
+
+.anim-pop { animation: sl-pop 420ms cubic-bezier(.34,1.56,.64,1) both; }
+.anim-rise { animation: sl-rise 360ms cubic-bezier(.2,.8,.2,1) both; }
+.anim-sheet { animation: sl-sheet 320ms cubic-bezier(.2,.9,.25,1) both; }
+.anim-fade { animation: sl-fade 240ms ease-out both; }
+.anim-shake { animation: sl-shake 420ms ease-in-out; }
+.anim-pulse { animation: sl-pulse 1.8s ease-out infinite; }
+.anim-bob { animation: sl-bob 2.4s ease-in-out infinite; }
+.anim-spin { animation: sl-spin 1s linear infinite; }
+.anim-spin-slow { animation: sl-spin 2.6s linear infinite; }
+.anim-glow { animation: sl-glow 1.6s ease-in-out infinite; }
+.anim-float-up { animation: sl-float-up 1.1s ease-out both; }
+.anim-unlock { animation: sl-unlock 600ms ease-out both; }
+
+.stagger > * { animation: sl-rise 380ms cubic-bezier(.2,.8,.2,1) both; }
+.stagger > *:nth-child(2) { animation-delay: 40ms; }
+.stagger > *:nth-child(3) { animation-delay: 80ms; }
+.stagger > *:nth-child(4) { animation-delay: 120ms; }
+.stagger > *:nth-child(5) { animation-delay: 160ms; }
+.stagger > *:nth-child(6) { animation-delay: 200ms; }
+.stagger > *:nth-child(n+7) { animation-delay: 240ms; }
+
+@media (prefers-reduced-motion: reduce) {
+  :root:not([data-motion="full"]) *,
+  :root:not([data-motion="full"]) *::before,
+  :root:not([data-motion="full"]) *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+:root[data-motion="reduced"] *,
+:root[data-motion="reduced"] *::before,
+:root[data-motion="reduced"] *::after {
+  animation-duration: 1ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 1ms !important;
+  scroll-behavior: auto !important;
+}
+
+/* Range inputs: big touch-friendly thumbs */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 32px;
+  background: transparent;
+}
+input[type="range"]::-webkit-slider-runnable-track {
+  height: 6px;
+  border-radius: 3px;
+  background: rgb(var(--line));
+}
+input[type="range"]::-moz-range-track {
+  height: 6px;
+  border-radius: 3px;
+  background: rgb(var(--line));
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 26px;
+  height: 26px;
+  margin-top: -10px;
+  border-radius: 8px;
+  background: rgb(var(--panel));
+  border: 2px solid rgb(var(--ink));
+  box-shadow: 0 2px 0 rgb(var(--ink));
+}
+input[type="range"]::-moz-range-thumb {
+  width: 24px;
+  height: 24px;
+  border-radius: 8px;
+  background: rgb(var(--panel));
+  border: 2px solid rgb(var(--ink));
+}
+
+/* Code blocks */
+.code {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.6;
+  white-space: pre;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { scrollbar-width: none; }
+
+/* Circuit-lab animations (SVG) */
+@keyframes sl-sweep {
+  0%, 100% { transform: rotate(-60deg); }
+  50% { transform: rotate(60deg); }
+}
+.svg-center { transform-box: fill-box; transform-origin: center; }
+.anim-sweep { animation: sl-sweep 1.6s ease-in-out infinite; }
+.anim-spin-rev { animation: sl-spin 0.8s linear infinite reverse; }
+.anim-ping { animation: sl-ping 1.2s ease-out infinite; }
+.anim-ping-d { animation: sl-ping 1.2s ease-out .4s infinite; }
